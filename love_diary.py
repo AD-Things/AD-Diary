@@ -1,18 +1,17 @@
-# Love Diary for Adrija - Web Version
-
 import streamlit as st
 import gspread
 from datetime import datetime
 from google.oauth2.service_account import Credentials
+import json
 
 # Google Sheets Setup
 SCOPE = ["https://www.googleapis.com/auth/spreadsheets"]
 
-# Replace 'your-service-account.json' with the JSON key of your Google Cloud service account
-SERVICE_ACCOUNT_FILE = 'your-service-account.json'
+# Load credentials from Streamlit Secrets
+creds_info = json.loads(st.secrets["GOOGLE_SHEETS_CREDENTIALS"])
+creds = Credentials.from_service_account_info(creds_info, scopes=SCOPE)
 
-# Google Sheets Credentials
-creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPE)
+# Connect to Google Sheets
 client = gspread.authorize(creds)
 
 # Create or Open a Google Sheet
